@@ -41,21 +41,26 @@ for each wear category.</p>
 ```python
 from collections import defaultdict
 from itertools import combinations
-# Function to generate candidate k-item sequences
+
 def generate_candidates(dataset, k):
+    candidates = defaultdict(int)
+    for sequence in dataset:
+        for itemset in combinations(sequence, k):
+            candidates[itemset] += 1
+    return {item: support for item, support in candidates.items() if support >= min_support}
 
-
-    /WRITE YOUR CODE HERE/
-
-
-#Function to perform GSP algorithm
 def gsp(dataset, min_support):
+    frequent_pattern = defaultdict(int)
+    k = 1
+    sequence = dataset
+    while True:
+      candidates = generate_candidates(sequence, k)
+      if not candidates:
+        break
+      frequent_pattern.update(candidates)
+      k += 1
+    return frequent_pattern
 
-
-  /WRITE YOUR CODE HERE/
-
-
-#Example dataset for each category
 top_wear_data = [
  ["blouse", "t-shirt", "tank_top"],
  ["hoodie", "sweater", "top"],["hoodie"],["hoodie","sweater"]
@@ -76,7 +81,7 @@ party_wear_data = [
  # Add more sequences for party wear
 ]
 #Minimum support threshold
-min_support = 2
+min_support = 3
 #Perform GSP algorithm for each category
 top_wear_result = gsp(top_wear_data, min_support)
 bottom_wear_result = gsp(bottom_wear_data, min_support)
@@ -84,24 +89,26 @@ party_wear_result = gsp(party_wear_data, min_support)
 #Output the frequent sequential patterns for each category
 print("Frequent Sequential Patterns - Top Wear:")
 if top_wear_result:
- for pattern, support in top_wear_result.items():
- print(f"Pattern: {pattern}, Support: {support}")
+  for pattern, support in top_wear_result.items():
+    print(f"Pattern: {pattern}, Support: {support}")
 else:
- print("No frequent sequential patterns found in Top Wear.")
-print("\nFrequent Sequential Patterns - Bottom Wear:")
+  print("No frequent sequential patterns found in Top Wear.")
+  print("\nFrequent Sequential Patterns - Bottom Wear:")
 if bottom_wear_result:
- for pattern, support in bottom_wear_result.items():
- print(f"Pattern: {pattern}, Support: {support}")
+  for pattern, support in bottom_wear_result.items():
+    print(f"Pattern: {pattern}, Support: {support}")
 else:
- print("No frequent sequential patterns found in Bottom Wear.")
-print("\nFrequent Sequential Patterns - Party Wear:")
+  print("No frequent sequential patterns found in Bottom Wear.")
+  print("\nFrequent Sequential Patterns - Party Wear:")
 if party_wear_result:
- for pattern, support in party_wear_result.items():
- print(f"Pattern: {pattern}, Support: {support}")
+  for pattern, support in party_wear_result.items():
+    print(f"Pattern: {pattern}, Support: {support}")
 else:
- print("No frequent sequential patterns found in Party Wear.")
+  print("No frequent sequential patterns found in Party Wear.")
 ```
 ### Output:
+
+![image](https://github.com/user-attachments/assets/57c90ccf-fe9c-4e77-a552-be22a2547ba2)
 
 ### Visualization:
 ```python
@@ -130,6 +137,10 @@ visualize_patterns_line(bottom_wear_result, 'Bottom Wear')
 visualize_patterns_line(party_wear_result, 'Party Wear')
 ```
 ### Output:
+
+![image](https://github.com/user-attachments/assets/467745d4-620e-40f7-91dc-5df8e8fa0997)
+
+![image](https://github.com/user-attachments/assets/a805baac-2d0e-4d6f-bf27-f6b8c096cf77)
 
 
 ### Result:
